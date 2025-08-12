@@ -89,6 +89,77 @@ createuser voiceai_app_db_user
 psql -d postgres
 ```
 
+## GitHub Deployment
+
+### Prerequisites
+1. GitHub account
+2. SSH key set up on your machine
+3. Repository created on GitHub
+
+### Setting Up SSH Authentication
+1. Check for existing SSH keys:
+   ```bash
+   ls -la ~/.ssh
+   ```
+   Look for files like `id_rsa.pub`, `id_ed25519.pub`, etc.
+
+2. If no SSH key exists, create one:
+   ```bash
+   ssh-keygen -t ed25519 -C "your_email@example.com"
+   ```
+   Follow the prompts (press Enter to accept defaults)
+
+3. Add SSH key to GitHub:
+   - Copy your public key:
+     ```bash
+     cat ~/.ssh/id_ed25519.pub
+     ```
+   - Go to GitHub.com → Settings → SSH and GPG keys
+   - Click "New SSH key"
+   - Title: e.g., "MacBook Pro"
+   - Key type: "Authentication Key"
+   - Paste your public key
+   - Click "Add SSH key"
+
+4. Test SSH connection:
+   ```bash
+   ssh -T git@github.com
+   ```
+   You should see: "Hi username! You've successfully authenticated..."
+
+### Deploying to GitHub
+1. Initialize git (if not already done):
+   ```bash
+   git init
+   ```
+
+2. Add your files:
+   ```bash
+   git add .
+   ```
+
+3. Commit changes:
+   ```bash
+   git commit -m "Initial commit"
+   ```
+
+4. Add remote repository:
+   ```bash
+   git remote add origin git@github.com:username/voiceai-geography.git
+   ```
+   Replace 'username' with your GitHub username
+
+5. Push to GitHub:
+   ```bash
+   git branch -M main
+   git push -u origin main
+   ```
+
+### Troubleshooting
+- If you see "Permission denied" errors, verify your SSH key is added to GitHub
+- If you get "Repository not found" errors, check your repository name and permissions
+- For "Updates were rejected" errors, try pulling changes first: `git pull origin main`
+
 ## Security Notes
 
 - The setup script requires PostgreSQL admin privileges to run initially
@@ -96,3 +167,5 @@ psql -d postgres
 - Database passwords should be strong and unique
 - Never commit `.env` files to version control
 - The `setup_db.py` script should only be run during initial setup or when resetting the database
+- SSL certificates and private keys should never be committed to version control
+- Always verify `.gitignore` is properly configured before pushing sensitive directories
