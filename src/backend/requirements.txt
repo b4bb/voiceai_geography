@@ -1,0 +1,8 @@
+fastapi==0.104.1
+uvicorn==0.24.0
+python-dotenv==1.0.0
+httpx==0.25.1
+psycopg[binary]==3.2.9  # Latest version with Python 3.13 support
+python-jose[cryptography]==3.3.0  # for JWT tokens
+passlib[bcrypt]==1.7.4  # for password hashing
+python-multipart==0.0.6  # for form data processing
