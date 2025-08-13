@@ -1,4 +1,5 @@
 // --- src/app.js ---
+import './styles/main.css';
 let Conversation = null;
 let conversation = null;
 

@@ -1,3 +1,5 @@
+import './styles/main.css';
+
 // State management
 let accessToken = null;
 let currentSort = { field: 'created_at', ascending: false };
