@@ -1,5 +1,4 @@
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -35,18 +34,5 @@ module.exports = {
     aggregateTimeout: 300,
     poll: 1000
   },
-  plugins: [
-    new CopyPlugin({
-      patterns: [
-        { 
-          from: './*.html',
-          to: '[name][ext]'
-        },
-        { 
-          from: './*.css',
-          to: '[name][ext]'
-        }
-      ],
-    }),
-  ]
+  plugins: []
 };
