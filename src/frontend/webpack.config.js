@@ -9,7 +9,7 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath: '/static/',  // Updated to match FastAPI static file serving
     clean: true // Clean the output directory before emit
   },
   module: {
