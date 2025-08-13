@@ -250,15 +250,30 @@ def get_unsigned_url():
 # Serve admin page
 @app.get("/admin")
 async def serve_admin():
-    return FileResponse(os.path.join(static_dir, "admin.html"))
+    admin_path = os.path.join(static_dir, "admin.html")
+    if not os.path.exists(admin_path):
+        raise HTTPException(
+            status_code=500,
+            detail="admin.html not found. Please ensure the frontend build was successful."
+        )
+    return FileResponse(admin_path)
 
 # Get the absolute path to the static directory
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 
-# Serve index.html for root path
-@app.get("/")
-async def serve_index():
-    return FileResponse(os.path.join(static_dir, "index.html"))
+# Ensure static directory exists
+os.makedirs(static_dir, exist_ok=True)
 
 # Mount static files
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# Serve index.html for root path
+@app.get("/")
+async def serve_index():
+    index_path = os.path.join(static_dir, "index.html")
+    if not os.path.exists(index_path):
+        raise HTTPException(
+            status_code=500,
+            detail="index.html not found. Please ensure the frontend build was successful."
+        )
+    return FileResponse(index_path)
