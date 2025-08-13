@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -34,5 +35,16 @@ module.exports = {
     aggregateTimeout: 300,
     poll: 1000
   },
-  plugins: []
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './templates/index.html',
+      filename: 'index.html',
+      chunks: ['main']
+    }),
+    new HtmlWebpackPlugin({
+      template: './templates/admin.html',
+      filename: 'admin.html',
+      chunks: ['admin']
+    })
+  ]
 };
