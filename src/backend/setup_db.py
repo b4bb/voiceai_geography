@@ -12,18 +12,15 @@ import os
 
 def get_connection_params():
     """Get database connection parameters from environment or user input"""
-    # Check if running on Render
-    if 'RENDER' in os.environ:
-        database_url = os.getenv('DATABASE_URL')
-        if not database_url:
-            print("Error: DATABASE_URL environment variable is required when running on Render")
-            print("Please set DATABASE_URL in your Render service configuration")
-            sys.exit(1)
+    # First check if DATABASE_URL is available
+    database_url = os.getenv('DATABASE_URL')
+    if database_url:
         return database_url
-    else:
-        # Local development
-        db_password = getpass("Enter password for voiceai_app_db_user: ")
-        return f"postgresql://voiceai_app_db_user:{db_password}@localhost:5432/voiceai_geography"
+    
+    # If no DATABASE_URL, fall back to local development
+    print("No DATABASE_URL found in environment, falling back to local development mode")
+    db_password = getpass("Enter password for voiceai_app_db_user: ")
+    return f"postgresql://voiceai_app_db_user:{db_password}@localhost:5432/voiceai_geography"
 
 def verify_prerequisites(conn_string):
     """Verify that we can connect to the database as application user"""
@@ -93,8 +90,8 @@ def setup_tables(conn_string: str):
                 
                 print("Database tables created successfully!")
                 
-                # Generate .env file content if not on Render
-                if 'RENDER' not in os.environ:
+                # Only show .env suggestion in local development
+                if not os.getenv('DATABASE_URL'):
                     env_content = f"""# Database Configuration
 DATABASE_URL={conn_string}
 
