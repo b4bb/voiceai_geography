@@ -160,6 +160,153 @@ psql -d postgres
 - If you get "Repository not found" errors, check your repository name and permissions
 - For "Updates were rejected" errors, try pulling changes first: `git pull origin main`
 
+## Render Deployment
+
+### Prerequisites
+1. GitHub repository is set up and contains your latest code
+2. A Render account (sign up at render.com)
+3. PostgreSQL database credentials
+4. ElevenLabs API credentials
+
+### Database Setup on Render
+1. Create PostgreSQL Database:
+   - Go to Render Dashboard → New + → PostgreSQL
+   - Name: `voiceai-geography-db` (or your preferred name)
+   - Database: `voiceai_geography`
+   - User: Leave as auto-generated
+   - Region: Choose closest to your users
+   - Click "Create Database"
+
+2. Verify Database Creation:
+   - Wait for database to be created (Status: Available)
+   - Save these values from the database info page:
+     - Internal Database URL
+     - External Database URL
+     - User
+     - Password
+
+3. Test Database Connection:
+   ```bash
+   # Use the External Database URL
+   psql your_external_database_url
+   # You should see a psql prompt
+   # Try: \dt to list tables
+   ```
+
+### Web Service Setup
+1. Create Web Service:
+   - Go to Render Dashboard → New + → Web Service
+   - Connect your GitHub repository
+   - Name: `voiceai-geography` (or your preferred name)
+   - Region: Same as database
+   - Branch: main
+   - Root Directory: Leave empty
+   - Runtime: Python 3
+   - Build Command: 
+     ```bash
+     pip install -r src/backend/requirements.txt && cd src/frontend && npm install && npm run build
+     ```
+   - Start Command:
+     ```bash
+     cd src/backend && uvicorn server:app --host 0.0.0.0 --port $PORT
+     ```
+
+2. Configure Environment Variables:
+   - In Web Service → Environment
+   - Add the following:
+     ```
+     DATABASE_URL=your_internal_database_url
+     SECRET_KEY=your_secure_random_key
+     ALLOWED_ORIGINS=https://your-app-name.onrender.com
+     AGENT_ID=your_elevenlabs_agent_id
+     XI_API_KEY=your_elevenlabs_api_key
+     ```
+   - Generate a secure SECRET_KEY:
+     ```python
+     python -c "import secrets; print(secrets.token_hex(32))"
+     ```
+
+3. Initial Deployment:
+   - Click "Create Web Service"
+   - Watch the deployment logs for errors
+   - Status should change to "Live"
+
+### Verify Deployment
+1. Check Web Service:
+   - Visit `https://your-app-name.onrender.com`
+   - You should see your application frontend
+   - Check browser console for any errors
+
+2. Test API Endpoints:
+   - Try accessing `/admin`
+   - Test login functionality
+   - Verify ElevenLabs integration
+
+3. Check Database Connection:
+   - Try creating an admin user
+   - Verify invitation codes work
+   - Monitor logs for database errors
+
+4. SSL/HTTPS:
+   - Verify padlock icon in browser
+   - All URLs should be https://
+   - No mixed content warnings
+
+### Troubleshooting
+1. If deployment fails:
+   - Check build logs
+   - Verify all environment variables
+   - Ensure database URL is correct
+   - Check resource limits
+
+2. If database connection fails:
+   - Verify DATABASE_URL format
+   - Check if database is available
+   - Try connecting via psql
+   - Check network access rules
+
+3. If frontend doesn't load:
+   - Check build command output
+   - Verify dist directory contents
+   - Check static file serving
+   - Clear browser cache
+
+### Monitoring
+1. Set Up Monitoring:
+   - Enable Render logging
+   - Set up alerts for errors
+   - Monitor resource usage
+
+2. Regular Checks:
+   - Database connection
+   - API response times
+   - Error rates
+   - Resource utilization
+
+### Updates and Maintenance
+1. To Update Application:
+   - Push changes to GitHub
+   - Render will auto-deploy
+   - Watch deployment logs
+   - Verify changes in production
+
+2. Database Maintenance:
+   - Regular backups enabled by default
+   - Monitor database size
+   - Check connection pooling
+   - Monitor query performance
+
+### Cost Management
+1. Free Tier Limitations:
+   - Web Service: 750 hours/month
+   - Database: 90 days trial
+   - Bandwidth: Limited
+
+2. Upgrade Considerations:
+   - Monitor usage
+   - Set up billing alerts
+   - Choose appropriate instance size
+
 ## Security Notes
 
 - The setup script requires PostgreSQL admin privileges to run initially
