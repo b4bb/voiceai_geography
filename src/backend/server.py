@@ -250,7 +250,12 @@ def get_unsigned_url():
 # Serve admin page
 @app.get("/admin")
 async def serve_admin():
-    return FileResponse("../frontend/dist/admin.html")
+    return FileResponse("static/admin.html")
 
-# Mount static files and serve index.html
-app.mount("/", StaticFiles(directory="../frontend/dist", html=True), name="static")
+# Serve index.html for root path
+@app.get("/")
+async def serve_index():
+    return FileResponse("static/index.html")
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
