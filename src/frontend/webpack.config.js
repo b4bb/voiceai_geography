@@ -39,11 +39,11 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { 
-          from: './dist/*.html',
+          from: './*.html',
           to: '[name][ext]'
         },
         { 
-          from: './dist/*.css',
+          from: './*.css',
           to: '[name][ext]'
         }
       ],
