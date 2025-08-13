@@ -193,6 +193,20 @@ psql -d postgres
    # Try: \dt to list tables
    ```
 
+### Development vs Production Setup
+
+#### Local Development
+- Frontend files are served from `src/frontend/dist`
+- Backend and frontend can be run separately
+- Changes are watched and rebuilt automatically
+- Uses relative paths for file serving
+
+#### Production (Render)
+- All files are served by the FastAPI server
+- Static files are served from `backend/static`
+- Build process happens once during deployment
+- Uses absolute paths for file serving
+
 ### Web Service Setup
 1. Create Web Service:
    - Go to Render Dashboard → New + → Web Service
@@ -238,6 +252,31 @@ psql -d postgres
    - Watch the deployment logs for errors
    - Status should change to "Live"
 
+### File Structure
+The application uses different file structures for development and production:
+
+```
+Development:
+src/
+├── frontend/
+│   ├── dist/          # Built frontend files (local development)
+│   ├── app.js         # Frontend source
+│   └── admin.js       # Admin interface source
+└── backend/
+    ├── server.py      # FastAPI server
+    └── ...            # Other backend files
+
+Production (after build):
+src/
+├── frontend/
+│   ├── dist/          # Built frontend files
+│   └── ...            # Source files (not used in production)
+└── backend/
+    ├── static/        # Copied frontend files for serving
+    ├── server.py      # FastAPI server
+    └── ...            # Other backend files
+```
+
 ### Verify Deployment
 1. Check Web Service:
    - Visit `https://your-app-name.onrender.com`
@@ -274,9 +313,10 @@ psql -d postgres
 
 3. If frontend doesn't load:
    - Check build command output
-   - Verify dist directory contents
-   - Check static file serving
+   - Verify files were copied to backend/static/
+   - Check paths in server.py match static file locations
    - Clear browser cache
+   - Check network tab for 404 errors on static files
 
 ### Monitoring
 1. Set Up Monitoring:
