@@ -8,13 +8,27 @@ Prerequisites:
 import psycopg
 from getpass import getpass
 import sys
+import os
 
-def verify_prerequisites():
+def get_connection_params():
+    """Get database connection parameters from environment or user input"""
+    # Check if running on Render
+    if 'RENDER' in os.environ:
+        database_url = os.getenv('DATABASE_URL')
+        if not database_url:
+            print("Error: DATABASE_URL environment variable is required when running on Render")
+            print("Please set DATABASE_URL in your Render service configuration")
+            sys.exit(1)
+        return database_url
+    else:
+        # Local development
+        db_password = getpass("Enter password for voiceai_app_db_user: ")
+        return f"postgresql://voiceai_app_db_user:{db_password}@localhost:5432/voiceai_geography"
+
+def verify_prerequisites(conn_string):
     """Verify that we can connect to the database as application user"""
-    db_password = getpass("Enter password for voiceai_app_db_user: ")
     try:
         # Try connecting to the database as application user
-        conn_string = f"dbname=voiceai_geography user=voiceai_app_db_user password={db_password}"
         with psycopg.connect(conn_string, autocommit=True) as conn:
             with conn.cursor() as cur:
                 # Check if we can create tables
@@ -25,7 +39,7 @@ def verify_prerequisites():
                     DROP TABLE _test_permissions;
                 """)
         print("Database connection and permissions verified successfully!")
-        return db_password
+        return conn_string
     except psycopg.OperationalError as e:
         if "database" in str(e).lower():
             print("Error: Database 'voiceai_geography' does not exist")
@@ -36,7 +50,7 @@ def verify_prerequisites():
         print("\nPlease ensure:")
         print("1. Database 'voiceai_geography' exists")
         print("2. Role 'voiceai_app_db_user' exists with appropriate permissions")
-        print("3. The password is correct")
+        print("3. The connection parameters are correct")
         sys.exit(1)
     except psycopg.InsufficientPrivilege:
         print("Error: voiceai_app_db_user lacks required permissions")
@@ -45,13 +59,10 @@ def verify_prerequisites():
         print("- USAGE and CREATE privileges on public schema")
         sys.exit(1)
 
-def setup_tables(db_password: str):
+def setup_tables(conn_string: str):
     """Set up the database tables using application user credentials"""
     
     try:
-        # Connect as application user
-        conn_string = f"dbname=voiceai_geography user=voiceai_app_db_user password={db_password}"
-        print(f"Connecting with: {conn_string}")
         with psycopg.connect(conn_string, autocommit=True) as conn:
             with conn.cursor() as cur:
                 print("Connected as application user")
@@ -82,22 +93,24 @@ def setup_tables(db_password: str):
                 
                 print("Database tables created successfully!")
                 
-                # Generate .env file content
-                env_content = f"""# Database Configuration
-DATABASE_URL=postgresql://voiceai_app_db_user:{db_password}@localhost:5432/voiceai_geography
+                # Generate .env file content if not on Render
+                if 'RENDER' not in os.environ:
+                    env_content = f"""# Database Configuration
+DATABASE_URL={conn_string}
 
 # Other configurations will be added during deployment
 """
-                print("\nAdd the following to your .env file:")
-                print(env_content)
+                    print("\nAdd the following to your .env file:")
+                    print(env_content)
                 
     except psycopg.Error as e:
         print(f"Error during table creation: {e}")
         print("\nPlease verify:")
-        print("1. The password is correct")
+        print("1. The connection parameters are correct")
         print("2. The user has necessary permissions")
         sys.exit(1)
 
 if __name__ == "__main__":
-    db_password = verify_prerequisites()
-    setup_tables(db_password)
+    conn_string = get_connection_params()
+    conn_string = verify_prerequisites(conn_string)
+    setup_tables(conn_string)
