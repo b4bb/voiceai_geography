@@ -218,7 +218,7 @@ psql -d postgres
    - Runtime: Python 3
    - Build Command: 
      ```bash
-     pip install -r src/backend/requirements.txt && cd src/frontend && npm install && npm run build && mkdir -p /opt/render/project/src/src/backend/static && cp -r dist/* /opt/render/project/src/src/backend/static/ && cp style.css /opt/render/project/src/src/backend/static/
+     pip install -r src/backend/requirements.txt && cd src/frontend && npm install && npm run build && mkdir -p /opt/render/project/src/src/backend/static && cp -r dist/* /opt/render/project/src/src/backend/static/
      ```
      This command:
      1. Installs Python dependencies
