@@ -218,15 +218,16 @@ psql -d postgres
    - Runtime: Python 3
    - Build Command: 
      ```bash
-     pip install -r src/backend/requirements.txt && cd src/frontend && npm install && npm run build && mkdir -p ../backend/static && cp -r dist/* ../backend/static/
+     pip install -r src/backend/requirements.txt && cd src/frontend && npm install && npm run build && cd ../backend && mkdir -p static && cp -r ../frontend/dist/* static/
      ```
      This command:
      1. Installs Python dependencies
      2. Goes to frontend directory
      3. Installs Node.js dependencies
      4. Builds frontend files
-     5. Creates static directory in backend
-     6. Copies built files to backend/static
+     5. Changes to backend directory
+     6. Creates static directory
+     7. Copies built files using correct relative paths
    - Start Command:
      ```bash
      cd src/backend && uvicorn server:app --host 0.0.0.0 --port $PORT
