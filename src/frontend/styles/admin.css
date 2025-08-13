@@ -1,0 +1,68 @@
+/* Admin-specific styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+th:hover {
+    background-color: #e9ecef;
+}
+
+.controls {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#refreshButton {
+    width: auto;
+}
+
+#refreshButton.refreshing {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.status-valid {
+    color: #28a745;
+}
+
+.status-expired {
+    color: #dc3545;
+}
+
+.status-depleted {
+    color: #ffc107;
+}
+
+/* Login form specific styles */
+#loginForm .input-group {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#loginForm input {
+    margin-bottom: 10px;
+}
+
+/* Table responsive styles */
+@media screen and (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

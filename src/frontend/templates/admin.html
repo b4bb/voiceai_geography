@@ -6,6 +6,41 @@
     <title>VoiceAI Geography - Admin</title>
 </head>
 <body>
-    <div id="admin"></div>
+    <div id="admin" class="container">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <h1>Admin Login</h1>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <div id="loginError" class="error"></div>
+                <button id="loginButton">Login</button>
+            </div>
+        </div>
+
+        <!-- Codes Panel (hidden initially) -->
+        <div id="codesPanel" style="display: none;">
+            <h1>Invitation Codes</h1>
+            <div class="controls">
+                <label>
+                    <input type="checkbox" id="showValidOnly"> Show Valid Only
+                </label>
+                <button id="refreshButton">Refresh</button>
+            </div>
+            <table id="codesTable">
+                <thead>
+                    <tr>
+                        <th data-sort="code">Code</th>
+                        <th data-sort="created_at">Created</th>
+                        <th data-sort="expires_at">Expires</th>
+                        <th data-sort="max_calls">Max Calls</th>
+                        <th data-sort="call_count">Used</th>
+                        <th data-sort="is_valid">Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

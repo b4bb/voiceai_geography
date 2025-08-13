@@ -1,4 +1,5 @@
 import './styles/main.css';
+import './styles/admin.css';
 
 // State management
 let accessToken = null;

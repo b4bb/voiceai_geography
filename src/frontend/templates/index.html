@@ -6,6 +6,32 @@
     <title>VoiceAI Geography</title>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app" class="container">
+        <!-- Home Page -->
+        <div id="homePage">
+            <h1>VoiceAI Geography</h1>
+            <div class="input-group">
+                <input type="text" id="invitationCode" placeholder="Enter your invitation code">
+                <div id="codeError" class="error"></div>
+                <button id="submitCode">Submit</button>
+            </div>
+        </div>
+
+        <!-- Voice Agent Page -->
+        <div id="voiceAgentPage">
+            <h1>Geography Assistant</h1>
+            <div class="status" id="connectionStatus">Disconnected</div>
+            <div class="status" id="speakingStatus">Agent Silent</div>
+            <div class="button-group">
+                <button id="startButton">Start Conversation</button>
+                <button id="endButton" disabled>End Conversation</button>
+            </div>
+        </div>
+
+        <!-- Debug Panel (hidden by default) -->
+        <div id="debugPanel" class="debug-panel">
+            <div id="debugLog" class="debug-log"></div>
+        </div>
+    </div>
 </body>
 </html>
