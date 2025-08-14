@@ -19,13 +19,15 @@ def get_db_config() -> str:
     return database_url
 
 @contextmanager
-def get_db_connection():
+def get_db_connection(quiet: bool = False):
     """Create and return a database connection"""
     try:
         conninfo = get_db_config()
-        print(f"Attempting to connect to database: {conninfo}")
+        if not quiet:
+            print(f"Attempting to connect to database: {conninfo}")
         with psycopg.connect(conninfo, row_factory=dict_row) as conn:
-            print("Database connection successful")
+            if not quiet:
+                print("Database connection successful")
             yield conn
     except psycopg.Error as e:
         print(f"Error connecting to database: {e}")

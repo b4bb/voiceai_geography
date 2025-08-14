@@ -33,6 +33,7 @@ def validate_password(password: str) -> tuple[bool, str]:
     has_upper = any(c.isupper() for c in password)
     has_lower = any(c.islower() for c in password)
     has_digit = any(c.isdigit() for c in password)
+    
     has_special = any(not c.isalnum() for c in password)
     
     if not all([has_upper, has_lower, has_digit, has_special]):
@@ -50,7 +51,7 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 def get_admin(username: str):
-    with get_db_connection() as conn:
+    with get_db_connection(quiet=True) as conn:
         with conn.cursor() as cur:
             cur.execute(
                 "SELECT * FROM admins WHERE username = %s",

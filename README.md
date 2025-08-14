@@ -77,6 +77,31 @@ If the prerequisites are not met, the script will exit with an error message. He
 
 Note: The sequence permissions (admins_id_seq and invitation_codes_id_seq) should be granted after the tables are created, as the sequences are created automatically with the tables.
 
+### Creating Admin Users
+1. Navigate to the backend directory:
+   ```bash
+   cd src/backend
+   ```
+
+2. Create an admin user using the create_admin.py script:
+   ```bash
+   python create_admin.py <username> '<password>'
+   ```
+   
+   Note: The password must meet these requirements:
+   - At least 12 characters long
+   - Contains at least one uppercase letter
+   - Contains at least one lowercase letter
+   - Contains at least one number
+   - Contains at least one special character
+   
+   Important: When using special characters in the password (like $, @, !, etc.), enclose the password in single quotes to prevent shell interpretation.
+   
+   Example:
+   ```bash
+   python create_admin.py admin01 'MySecure123!@#'
+   ```
+
 Or using command line:
 ```bash
 # Create database
@@ -237,7 +262,7 @@ psql -d postgres
    - In Web Service → Environment
    - Add the following:
      ```
-     DATABASE_URL=your_internal_database_url
+     DATABASE_URL=your_internal_database_url -- AS: for voiceai_geography database and voiceai_app_db_user
      SECRET_KEY=your_secure_random_key
      ALLOWED_ORIGINS=https://your-app-name.onrender.com
      AGENT_ID=your_elevenlabs_agent_id

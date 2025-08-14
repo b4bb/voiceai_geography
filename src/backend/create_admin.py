@@ -19,7 +19,7 @@ def create_admin_user(username: str, password: str):
         print(f"Invalid password: {error_message}")
         return
 
-    with get_db_connection() as conn:
+    with get_db_connection(quiet=True) as conn:
         with conn.cursor() as cur:
             # Check if admin already exists
             cur.execute("SELECT username FROM admins WHERE username = %s", (username,))
