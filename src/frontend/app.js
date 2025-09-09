@@ -222,7 +222,7 @@ async function startConversation() {
             ? currentInvitationData.first_name.trim() 
             : "Student";
         
-        console.log('Using customer name:', customerName);
+        console.log('🔥🔥🔥 CUSTOMER NAME DEBUG:', customerName, '🔥🔥🔥');
         
         conversation = await ConversationClass.startSession({
             signedUrl: signedUrl,

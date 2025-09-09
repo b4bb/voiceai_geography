@@ -29,14 +29,18 @@ module.exports = {
                         presets: ['@babel/preset-env']
                     }
                 }
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
             }
         ]
     },
     plugins: [
         new CopyPlugin({
             patterns: [
-                { from: 'src/frontend/dist/index.html', to: 'index.html' },
-                { from: 'src/frontend/dist/styles.css', to: 'static/styles.css' }
+                { from: 'src/frontend/templates/index.html', to: 'index.html' },
+                { from: 'src/frontend/styles/main.css', to: 'static/styles.css' }
             ],
         }),
     ]
