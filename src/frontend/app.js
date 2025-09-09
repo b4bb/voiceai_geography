@@ -217,10 +217,10 @@ async function startConversation() {
         const signedUrl = await getSignedUrl();
         const ConversationClass = await loadElevenLabsClient();
         
-        // Use first name from invitation code data, fallback to "Student"
+        // Use first name from invitation code data, fallback to "Charlie"
         const customerName = (currentInvitationData?.first_name && currentInvitationData.first_name.trim()) 
             ? currentInvitationData.first_name.trim() 
-            : "Student";
+            : "Charlie";
         
         console.log('🔥🔥🔥 CUSTOMER NAME DEBUG:', customerName, '🔥🔥🔥');
         
