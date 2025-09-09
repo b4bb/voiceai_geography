@@ -173,6 +173,8 @@ function filterAndDisplayCodes() {
     tbody.innerHTML = filteredCodes.map(code => `
         <tr>
             <td>${code.code}</td>
+            <td>${code.first_name || '-'}</td>
+            <td>${code.last_name || '-'}</td>
             <td>${new Date(code.created_at).toLocaleString()}</td>
             <td>${new Date(code.expires_at).toLocaleString()}</td>
             <td>${code.max_calls}</td>

@@ -81,6 +81,8 @@ def setup_tables(conn_string: str):
                     CREATE TABLE IF NOT EXISTS invitation_codes (
                         id SERIAL PRIMARY KEY,
                         code VARCHAR(50) UNIQUE NOT NULL,
+                        first_name VARCHAR(100),
+                        last_name VARCHAR(100),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         expires_at TIMESTAMP NOT NULL,
                         max_calls INTEGER NOT NULL,

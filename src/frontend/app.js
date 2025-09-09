@@ -39,6 +39,7 @@ async function loadElevenLabsClient() {
     return Conversation;
 }
 let currentInvitationCode = null;
+let currentInvitationData = null;
 
 // Page Management
 function showPage(pageId) {
@@ -62,7 +63,9 @@ async function validateInvitationCode(code) {
             throw new Error(error.detail || 'Invalid invitation code');
         }
 
-        return true;
+        const data = await response.json();
+        currentInvitationData = data;
+        return data;
     } catch (error) {
         console.error('Error validating code:', error);
         throw error;
@@ -214,10 +217,17 @@ async function startConversation() {
         const signedUrl = await getSignedUrl();
         const ConversationClass = await loadElevenLabsClient();
         
+        // Use first name from invitation code data, fallback to "Student"
+        const customerName = (currentInvitationData?.first_name && currentInvitationData.first_name.trim()) 
+            ? currentInvitationData.first_name.trim() 
+            : "Student";
+        
+        console.log('Using customer name:', customerName);
+        
         conversation = await ConversationClass.startSession({
             signedUrl: signedUrl,
             dynamicVariables: {
-                customer_name: "Student"
+                customer_name: customerName
             },
             onConnect: () => {
                 console.log('WebSocket Connected');
@@ -253,6 +263,7 @@ async function startConversation() {
             alert(error.message);
             showPage('homePage');
             currentInvitationCode = null;
+            currentInvitationData = null;
         } else {
             alert('Failed to start conversation. Please try again.');
         }

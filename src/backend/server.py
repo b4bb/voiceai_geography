@@ -89,6 +89,8 @@ class InvitationCodeBase(BaseModel):
     code: str
 
 class InvitationCodeResponse(InvitationCodeBase):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     created_at: datetime
     expires_at: datetime
     max_calls: int
@@ -192,7 +194,12 @@ async def validate_code(code_data: InvitationCodeBase):
         else:
             raise HTTPException(status_code=400, detail="Maximum number of calls reached")
     
-    return {"valid": True}
+    return {
+        "valid": True,
+        "code": code['code'],
+        "first_name": code.get('first_name'),
+        "last_name": code.get('last_name')
+    }
 
 @app.post("/api/increment-code")
 async def increment_code_usage(code_data: InvitationCodeBase):
@@ -250,7 +257,7 @@ def get_unsigned_url():
 # Serve admin page
 @app.get("/admin")
 async def serve_admin():
-    admin_path = os.path.join(static_dir, "admin.html")
+    admin_path = "../frontend/dist/admin.html"
     if not os.path.exists(admin_path):
         raise HTTPException(
             status_code=500,
@@ -258,19 +265,13 @@ async def serve_admin():
         )
     return FileResponse(admin_path)
 
-# Get the absolute path to the static directory
-static_dir = os.path.join(os.path.dirname(__file__), "static")
-
-# Ensure static directory exists
-os.makedirs(static_dir, exist_ok=True)
-
-# Mount static files
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+# Mount static files from frontend build directory
+app.mount("/static", StaticFiles(directory="../frontend/dist"), name="static")
 
 # Serve index.html for root path
 @app.get("/")
 async def serve_index():
-    index_path = os.path.join(static_dir, "index.html")
+    index_path = "../frontend/dist/index.html"
     if not os.path.exists(index_path):
         raise HTTPException(
             status_code=500,
