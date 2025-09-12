@@ -1,5 +1,7 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: './src/frontend/app.js',
@@ -32,16 +34,17 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             }
         ]
     },
     plugins: [
-        new CopyPlugin({
-            patterns: [
-                { from: 'src/frontend/templates/index.html', to: 'index.html' },
-                { from: 'src/frontend/styles/main.css', to: 'static/styles.css' }
-            ],
+        new HtmlWebpackPlugin({
+            template: 'src/frontend/templates/index.html',
+            filename: 'index.html'
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'static/styles.css'
         }),
     ]
 };

@@ -279,45 +279,20 @@ async def serve_admin():
     return FileResponse(admin_path)
 
 # Mount static files from frontend build directory
-# Try multiple possible paths for different deployment environments
-static_paths = [
-    "../frontend/dist",  # Local development
-    "../../dist",        # Render deployment structure
-    "../../../dist",     # Alternative Render structure
-    "dist"               # If running from project root
-]
-
-static_dir = None
-for path in static_paths:
-    if os.path.exists(path):
-        static_dir = path
-        break
-
-if static_dir:
+static_dir = "../../dist/static"  # Single, consistent path
+if os.path.exists(static_dir):
+    print(f"Mounting static files from: {os.path.abspath(static_dir)}")
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 else:
-    print("Warning: No static directory found. Static files will not be served.")
+    raise RuntimeError(f"Static directory not found: {os.path.abspath(static_dir)}. Run 'npm run build' first.")
 
 # Serve index.html for root path
 @app.get("/")
 async def serve_index():
-    # Try multiple possible paths for index.html
-    index_paths = [
-        "../frontend/dist/index.html",  # Local development
-        "../../dist/index.html",        # Render deployment structure
-        "../../../dist/index.html",     # Alternative Render structure
-        "dist/index.html"               # If running from project root
-    ]
-    
-    index_path = None
-    for path in index_paths:
-        if os.path.exists(path):
-            index_path = path
-            break
-    
-    if not index_path:
+    index_path = "../../dist/index.html"
+    if not os.path.exists(index_path):
         raise HTTPException(
             status_code=500,
-            detail="index.html not found. Please ensure the frontend build was successful."
+            detail=f"index.html not found at {os.path.abspath(index_path)}. Run 'npm run build' first."
         )
     return FileResponse(index_path)

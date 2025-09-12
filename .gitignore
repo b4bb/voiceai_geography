@@ -12,7 +12,6 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -25,6 +24,7 @@ var/
 .installed.cfg
 *.egg
 venv/
+src/backend/venv/
 
 # Node
 node_modules/
