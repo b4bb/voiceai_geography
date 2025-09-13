@@ -6,9 +6,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     entry: './src/frontend/app.js',
     output: {
-        filename: 'static/bundle.js',
+        filename: 'static/bundle.[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
-        publicPath: '/'
+        publicPath: '/',
+        clean: true
     },
     devServer: {
         static: {
@@ -44,7 +45,7 @@ module.exports = {
             filename: 'index.html'
         }),
         new MiniCssExtractPlugin({
-            filename: 'static/styles.css'
+            filename: 'static/styles.[contenthash].css'
         }),
     ]
 };

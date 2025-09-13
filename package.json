@@ -1,12 +1,13 @@
 {
   "name": "elevenlabs-conversational-ai-demo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple demo of ElevenLabs Conversational AI SDK",
   "scripts": {
     "start:backend": "cd src/backend && python3 -m uvicorn server:app --reload --port 3000",
     "build": "webpack --mode production",
     "dev": "concurrently \"npm run start:backend\" \"webpack serve --mode development\"",
-    "start": "npm run build && npm run start:backend"
+    "start": "npm run build && npm run start:backend",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "@elevenlabs/client": "latest",
