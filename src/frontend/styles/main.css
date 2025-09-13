@@ -1,77 +1,268 @@
-/* Main styles */
+/* True Notion Style - Clean Executive Design */
+
+/* Typography & Base */
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #f5f5f5;
+    padding: 32px 20px;
+    background-color: #FAFAFA;
+    color: #37352F;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 480px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: white;
+    padding: 48px 32px;
+    background-color: #FFFFFF;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #E9E9E7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* Typography Hierarchy */
 h1 {
-    color: #333;
+    color: #37352F;
     text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 32px 0;
+    letter-spacing: -0.02em;
 }
 
+/* Form Elements */
 .input-group {
-    margin: 20px 0;
+    margin: 32px 0;
+}
+
+.input-group p {
+    color: #787774;
+    font-size: 14px;
+    margin: 0 0 12px 0;
+    font-weight: 400;
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px 16px;
+    border: 1px solid #E9E9E7;
+    border-radius: 6px;
     font-size: 16px;
+    font-family: inherit;
+    background-color: #FFFFFF;
+    color: #37352F;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
 
+input[type="text"]:focus {
+    outline: none;
+    border-color: #2383E2;
+    box-shadow: 0 0 0 1px #2383E2;
+}
+
+input[type="text"]::placeholder {
+    color: #A8A8A8;
+}
+
+/* Buttons */
 button {
-    background-color: #007bff;
-    color: white;
+    background-color: #37352F;
+    color: #FFFFFF;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
     width: 100%;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 16px;
+}
+
+button:hover {
+    background-color: #2F2D2A;
+}
+
+button:active {
+    transform: translateY(1px);
 }
 
 button:disabled {
-    background-color: #ccc;
+    background-color: #E9E9E7;
+    color: #A8A8A8;
     cursor: not-allowed;
+    transform: none;
 }
 
+/* Secondary Button Style */
+button.secondary {
+    background-color: transparent;
+    color: #37352F;
+    border: 1px solid #E9E9E7;
+}
+
+button.secondary:hover {
+    background-color: #F7F7F5;
+}
+
+button.secondary:disabled {
+    background-color: transparent;
+    color: #A8A8A8;
+    border-color: #E9E9E7;
+}
+
+/* Error Messages */
 .error {
-    color: red;
-    margin-top: 10px;
+    color: #E03E3E;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 0;
+    background: none;
 }
 
+/* Voice Agent Page */
 #voiceAgentPage {
     display: none;
 }
 
+/* Status Cards */
+.status-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 32px 0;
+}
+
 .status {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
+    padding: 16px 20px;
+    border-radius: 6px;
     text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #F7F7F5;
+    color: #787774;
+    border: 1px solid #E9E9E7;
+    transition: all 0.2s ease;
 }
 
 #connectionStatus.connected {
-    background-color: #28a745;
-    color: white;
+    background-color: #EDF7ED;
+    color: #0F5132;
+    border-color: #C3E6CB;
 }
 
 #speakingStatus.speaking {
-    background-color: #17a2b8;
-    color: white;
+    background-color: #E7F3FF;
+    color: #0969DA;
+    border-color: #B6E3FF;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+#startButton {
+    background-color: #2383E2;
+}
+
+#startButton:hover {
+    background-color: #1A73CF;
+}
+
+#endButton {
+    background-color: transparent;
+    color: #37352F;
+    border: 1px solid #E9E9E7;
+}
+
+#endButton:hover {
+    background-color: #F7F7F5;
+}
+
+#endButton:disabled {
+    background-color: transparent;
+    color: #A8A8A8;
+    border-color: #E9E9E7;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    body {
+        padding: 16px 12px;
+    }
+    
+    .container {
+        padding: 32px 24px;
+        max-width: none;
+        margin: 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        min-height: calc(100vh - 32px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    h1 {
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+    
+    .input-group {
+        margin: 24px 0;
+    }
+    
+    .status-container {
+        margin: 24px 0;
+        gap: 12px;
+    }
+    
+    .button-group {
+        margin-top: 24px;
+        gap: 16px;
+    }
+    
+    button {
+        padding: 16px 24px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    input[type="text"] {
+        padding: 16px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 24px 16px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+}
+
+/* Focus and Accessibility */
+button:focus-visible,
+input[type="text"]:focus-visible {
+    outline: 2px solid #2383E2;
+    outline-offset: 2px;
+}
+
+/* Smooth transitions for better UX */
+* {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Debug Panel Styles */
